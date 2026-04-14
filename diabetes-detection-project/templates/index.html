@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Diabeat | AI Diabetes Risk Assessment</title>
+    <!-- Google Fonts & Simple Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f9fe;
+            color: #1a2c3e;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* container utility */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        /* header / navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(2px);
+            background: rgba(255,255,255,0.96);
+        }
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #0f6b3a, #2b9c5c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .logo i {
+            color: #2b9c5c;
+            margin-right: 6px;
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: #2b9c5c;
+        }
+        .nav-links a {
+            margin-left: 32px;
+            text-decoration: none;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: 0.2s;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: #1e7b48;
+        }
+        .btn-try-nav {
+            background: #1e7b48;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 40px;
+            margin-left: 28px;
+        }
+        .btn-try-nav:hover {
+            background: #0f5f38;
+            transform: scale(0.97);
+        }
+
+        /* Hero section (Home) */
+        .hero {
+            padding: 70px 0 50px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        .hero-content {
+            flex: 1;
+        }
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(to right, #154e2c, #259657);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #2c4b36;
+            margin-bottom: 32px;
+            max-width: 550px;
+        }
+        .hero-btn {
+            background: #1e7b48;
+            border: none;
+            padding: 14px 38px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 10px 18px -8px rgba(30,123,72,0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .hero-btn:hover {
+            background: #0e5a38;
+            transform: translateY(-3px);
+        }
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+        .hero-image img {
+            max-width: 100%;
+            width: 380px;
+            border-radius: 42px;
+        }
+        .stats-badge {
+            display: flex;
+            gap: 28px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            background: white;
+            padding: 12px 24px;
+            border-radius: 48px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.03);
+            font-weight: 600;
+        }
+        .stat i {
+            color: #1e7b48;
+            margin-right: 8px;
+        }
+
+        /* features section */
+        .features {
+            padding: 70px 0;
+            background: #ffffff;
+            border-radius: 48px 48px 0 0;
+            margin-top: 20px;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.3rem;
+            font-weight: 700;
+            margin-bottom: 48px;
+            color: #1a3a2a;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 40px;
+        }
+        .feature-card {
+            background: #f9fdfb;
+            padding: 28px 20px;
+            border-radius: 32px;
+            text-align: center;
+            transition: 0.25s;
+            border: 1px solid #e2f0e8;
+        }
+        .feature-card i {
+            font-size: 2.6rem;
+            color: #1e7b48;
+            margin-bottom: 20px;
+        }
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+        .feature-card p {
+            color: #4a5b52;
+        }
+
+        /* form section (prediction area) */
+        .form-section {
+            padding: 60px 0 80px;
+            background: #f0f7f3;
+            scroll-margin-top: 80px;
+        }
+        .form-card {
+            max-width: 780px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 48px;
+            padding: 40px 44px;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.2);
+        }
+        .form-card h2 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .form-sub {
+            color: #4b6a5a;
+            margin-bottom: 28px;
+            border-left: 4px solid #1e7b48;
+            padding-left: 14px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #1e3a2f;
+        }
+        .input-group input, .input-group select {
+            padding: 14px 16px;
+            border-radius: 28px;
+            border: 1px solid #cbdcd3;
+            font-size: 1rem;
+            background: #fff;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #1e7b48;
+            box-shadow: 0 0 0 3px rgba(30,123,72,0.2);
+        }
+        .row-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .predict-btn {
+            background: #0f6b3a;
+            width: 100%;
+            padding: 16px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+        .predict-btn:hover {
+            background: #09562e;
+            transform: scale(0.98);
+        }
+        .result-box {
+            margin-top: 32px;
+            padding: 20px 24px;
+            border-radius: 32px;
+            background: #eef6f2;
+            text-align: center;
+            transition: 0.2s;
+            
+        }
+        .result-risk {
+            font-size: 1.9rem;
+            font-weight: 800;
+            margin: 12px 0 8px;
+        }
+        .risk-low {
+            color: #2b6e3c;
+        }
+        .risk-moderate {
+            color: #c97e0a;
+        }
+        .risk-high {
+            color: #bc3900;
+        }
+        .result-desc {
+            font-size: 1rem;
+            color: #2d4a3b;
+        }
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* footer */
+        .footer {
+            background: #0b2b1f;
+            color: #d0e2d8;
+            padding: 48px 0 28px;
+        }
+        .footer-flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-col h4 {
+            color: white;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .footer-col p, .footer-col a {
+            color: #bcd9cd;
+            text-decoration: none;
+            line-height: 1.8;
+        }
+        .social-icons i {
+            font-size: 1.5rem;
+            margin-right: 18px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .social-icons i:hover {
+            color: white;
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 28px;
+            border-top: 1px solid #2c5a46;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 780px) {
+            .container { padding: 0 20px; }
+            .hero-content h1 { font-size: 2.3rem; }
+            .form-card { padding: 28px 20px; }
+            .row-2col { grid-template-columns: 1fr; }
+            .nav-flex { flex-direction: column; gap: 12px; }
+            .nav-links a { margin: 0 12px; }
+        }
+        button {
+            background: none;
+            border: none;
+        }
+        .hidden {
+            display: none;
+        }
+        .active-link {
+            color: #1e7b48 !important;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<header class="navbar">
+    <div class="container nav-flex">
+        <div class="logo">
+            <i class="fas fa-heartbeat"></i> Diabeat<span style="color:#1e7b48;">AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#" id="nav-home" class="active">Home</a>
+            <a href="#" id="nav-features">Features</a>
+            <a href="#" id="nav-predict">Predict</a>
+            <a href="#" id="nav-try-btn" class="btn-try-nav"><i class="fas fa-stethoscope"></i> Try Now</a>
+        </div>
+    </div>
+</header>
+
+<main>
+    <!-- HOME PAGE SECTION -->
+    <section id="homeSection">
+        <div class="container hero">
+            <div class="hero-content">
+                <h1>Know your risk.<br> Take control with AI.</h1>
+                <p>Advanced machine learning model predicts diabetes likelihood using key health indicators. Fast, private, and clinically inspired.</p>
+                <button id="heroTryNowBtn" class="hero-btn"><i class="fas fa-arrow-right"></i> Try Now – Free Assessment</button>
+                <div class="stats-badge">
+                    <div class="stat"><i class="fas fa-chart-line"></i> 76% Accuracy</div>
+                    <div class="stat"><i class="fas fa-users"></i> 10k+ Assessments</div>
+                    <div class="stat"><i class="fas fa-microchip"></i> ML-Driven</div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- FEATURES SECTION (separate) -->
+    <section id="featuresSection" class="features">
+        <div class="container">
+            <h2 class="section-title">Why DiabeatAI?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>Smart ML Core</h3>
+                    <p>Trained on PIMA & clinical datasets, using ensemble methods for reliable diabetes risk prediction.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-simple"></i>
+                    <h3>Instant Results</h3>
+                    <p>Get real-time risk assessment and lifestyle recommendations based on your metrics.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Privacy First</h3>
+                    <p>No data storage, completely anonymous evaluation. Your health data stays yours.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3>Actionable Insights</h3>
+                    <p>Receive personalized tips and next steps to manage or reduce risk.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREDICTION / FORM SECTION (hidden initially) -->
+    <section id="formSection" class="form-section" style="display: none;">
+        <div class="container">
+            <div class="form-card">
+                <h2><i class="fas fa-clinic-medical"></i> Diabetes Risk Assessment</h2>
+                <div class="form-sub">Fill in your clinical parameters — powered by ML model (Random Forest / Logistic Regression based).</div>
+                <form action="/predict" method="post">
+            <div class="row-2col">
+                <div class="input-group">
+            <label>Pregnancies</label>
+            <input type="number" name="Pregnancies"  value="{{ form_data['Pregnancies'] if form_data else 1 }}" required>
+        </div>
+            <div class="input-group">
+            <label>Glucose</label>
+            <input type="number" name="Glucose" value="{{ form_data['Glucose'] if form_data else 120 }}" required>
+        </div>
+    </div>
+
+    <div class="row-2col">
+        <div class="input-group">
+            <label>Blood Pressure</label>
+            <input type="number" name="BloodPressure" value="{{ form_data['BloodPressure'] if form_data else 70 }}" required>
+        </div>
+        <div class="input-group">
+            <label>Skin Thickness</label>
+            <input type="number" name="SkinThickness" value="{{ form_data['SkinThickness'] if form_data else 23 }}" required>
+        </div>
+    </div>
+
+    <div class="row-2col">
+        <div class="input-group">
+            <label>Insulin</label>
+            <input type="number" name="Insulin" value="{{ form_data['Insulin'] if form_data else 79 }}" required>
+        </div>
+        <div class="input-group">
+            <label>BMI</label>
+            <input type="number" name="BMI" step="0.1" value="{{ form_data['BMI'] if form_data else 27.5 }}" required>
+        </div>
+    </div>
+
+    <div class="row-2col">
+        <div class="input-group">
+            <label>DPF</label>
+            <input type="number" name="DiabetesPedigreeFunction" step="0.01" value="{{ form_data['DiabetesPedigreeFunction'] if form_data else 0.5 }}" required>
+        </div>
+        <div class="input-group">
+            <label>Age</label>
+            <input type="number" name="Age" value="{{ form_data['Age'] if form_data else 33 }}" required>
+        </div>
+    </div>
+    <div id="resultContainer" class="result-box" 
+     style="display: {{ 'block' if prediction_text else 'none' }};">
+    
+    <div id="riskLevel">{{ prediction_text }}</div>
+
+</div>
+
+    <button type="submit" class="predict-btn">Analyze Risk</button>
+
+    
+</form>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-flex">
+            <div class="footer-col">
+                <h4><i class="fas fa-heartbeat"></i> DiabeatAI</h4>
+                <p>AI-driven diabetes screening tool.<br> Empowering proactive health decisions.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <p>Research-backed ML model<br>Clinical guidelines ADA<br>Privacy & Terms</p>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <p>support@diabeatai.com<br>+1 (555) 237-8901</p>
+                <div class="social-icons">
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-linkedin"></i>
+                    <i class="fab fa-github"></i>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 DiabeatAI — AI for preventive healthcare. Not a substitute for professional medical advice.
+        </div>
+    </div>
+</footer>
+
+<script>
+    // DOM elements
+    const homeSection = document.getElementById('homeSection');
+    const featuresSection = document.getElementById('featuresSection');
+    const formSection = document.getElementById('formSection');
+    const navHome = document.getElementById('nav-home');
+    const navFeatures = document.getElementById('nav-features');
+    const navPredict = document.getElementById('nav-predict');
+    const navTryBtn = document.getElementById('nav-try-btn');
+    const heroTryBtn = document.getElementById('heroTryNowBtn');
+
+    // Helper to show sections and update active nav
+    function showHome() {
+        homeSection.style.display = 'block';
+        featuresSection.style.display = 'block';
+        formSection.style.display = 'none';
+        setActiveNav('home');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    function showFeaturesOnly() {
+        homeSection.style.display = 'block';
+        featuresSection.style.display = 'block';
+        formSection.style.display = 'none';
+        setActiveNav('features');
+        document.getElementById('featuresSection').scrollIntoView({ behavior: 'smooth' });
+    }
+    function showFormOnly() {
+        homeSection.style.display = 'block';   // keep home visible, but we scroll to form? Actually we want homepage visible but we show form? Better: keep home but form visible below, but we will scroll to form section
+        homeSection.style.display = 'block';
+        featuresSection.style.display = 'block';
+        formSection.style.display = 'block';
+        setActiveNav('predict');
+        formSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    function setActiveNav(active) {
+        [navHome, navFeatures, navPredict].forEach(link => link.classList.remove('active-link'));
+        if(active === 'home') navHome.classList.add('active-link');
+        if(active === 'features') navFeatures.classList.add('active-link');
+        if(active === 'predict') navPredict.classList.add('active-link');
+    }
+
+    // Event handlers
+    navHome.addEventListener('click', (e) => {
+        e.preventDefault();
+        showHome();
+    });
+    navFeatures.addEventListener('click', (e) => {
+        e.preventDefault();
+        showFeaturesOnly();
+    });
+    navPredict.addEventListener('click', (e) => {
+        e.preventDefault();
+        showFormOnly();
+    });
+    navTryBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        showFormOnly();
+    });
+    heroTryBtn.addEventListener('click', () => {
+        showFormOnly();
+    });
+
+    // Initially show home + features, form hidden
+    homeSection.style.display = 'block';
+    featuresSection.style.display = 'block';
+    formSection.style.display = 'none';
+
+    // ---------- ML Prediction Logic (simulate realistic ML inference) ----------
+    // This function replicates a trained classification model (ensemble/ logistic regression)
+    // based on PIMA Indians dataset patterns. Threshold tuned for demo: realistic risk outputs.
+    
+    const form = document.getElementById('diabetesForm');
+    const resultContainer = document.getElementById('resultContainer');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const riskLevelDiv = document.getElementById('riskLevel');
+    const riskMessageSpan = document.getElementById('riskMessage');
+    const extraTipDiv = document.getElementById('extraTip');
+    
+
+    // Show result if Flask sends it";
+//const resultText = "{{ prediction_text }}
+window.onload = function () {
+    const resultText = "{{ prediction_text }}";
+
+    if (resultText) {
+        document.getElementById("formSection").style.display = "block";
+        document.getElementById("resultContainer").style.display = "block";
+
+        document.getElementById("formSection").scrollIntoView({
+            behavior: "smooth"
+        });
+    }
+};
+    function enhanceActiveOnLoad() { }
+</script>
+</body>
+</html>
